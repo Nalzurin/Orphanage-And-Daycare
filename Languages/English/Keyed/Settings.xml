@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<LanguageData>
+  <OrphanageRequestGoodwillAccept>Good will gain/loss when accepting orphanage request</OrphanageRequestGoodwillAccept>
+  <OrphanageRequestGoodwillDecline>Good will gain/loss when declining orphanage request</OrphanageRequestGoodwillDecline>
+  <OADModName>Orphanage And Daycare</OADModName>
+</LanguageData>

@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+  <QuestScriptDef>
+    <defName>AdoptionRequest</defName>
+    <rootSelectionWeight>1</rootSelectionWeight>
+    <defaultChallengeRating>1</defaultChallengeRating>
+    <expireDaysRange>4~8</expireDaysRange>
+    <questNameRules>
+      <rulesStrings>
+        <li>questName->Adoption request</li>
+      </rulesStrings>
+    </questNameRules>
+    <questDescriptionRules>
+      <rulesStrings>
+
+        <!-- Asker is faction leader -->
+        <li>questDescription(asker_factionLeader==True)->[asker_faction_leaderTitle] [asker_nameFull] of [asker_faction_name] contacts you with an adoption request, [asker_possessive] [thirdParty], a [asker_faction_pawnSingular], wishes to adopt [adoptee_nameFull]. \n\n[willSendShuttle]</li>
+
+        <!-- Asker is royal -->
+        <li>questDescription(asker_royalInCurrentFaction==True)->[asker_royalTitleInCurrentFaction] [asker_nameFull] of [asker_faction_name] contacts you with an adoption request, [asker_pronoun] wishes to adopt [adoptee_nameFull]. \n\n[willSendShuttle]</li>
+        
+        <li>willSendShuttle->[asker_pronoun] will send a shuttle to pick up [adoptee_nameDef].</li>
+        <li>thirdParty->friend</li>
+        <li>thirdParty->comrade</li>
+        <li>thirdParty->acquintance</li>
+        <li>thirdParty->trusted ally</li>
+      </rulesStrings>
+    </questDescriptionRules>
+    
+    <root Class="QuestNode_Sequence">
+      <nodes>
+        <li Class="QuestNode_SubScript">
+          <def>Util_RandomizePointsChallengeRating</def>
+        </li>
+        <li Class="OrphanageAndDaycare.QuestNode_GetChildToAdopt">
+          <storeAs>adoptee</storeAs>
+          <marketValue>marketValue</marketValue>
+        </li>
+        <li Class="QuestNode_GetMap" />
+
+        <li Class="QuestNode_RandomNode">
+          <nodes>
+            <li Class="QuestNode_GetPawn">
+              <selectionWeight>0.5</selectionWeight>
+              <storeAs>asker</storeAs>
+              <mustBeFactionLeader>true</mustBeFactionLeader>
+              <allowPermanentEnemyFaction>false</allowPermanentEnemyFaction>
+              <minTechLevel>Industrial</minTechLevel>
+              <hostileWeight>0.15</hostileWeight>
+            </li>
+            <li Class="QuestNode_GetPawn">
+              <selectionWeight>0.5</selectionWeight>
+              <storeAs>asker</storeAs>
+              <canGeneratePawn>true</canGeneratePawn>
+              <allowPermanentEnemyFaction>false</allowPermanentEnemyFaction>
+              <mustHaveRoyalTitleInCurrentFaction>true</mustHaveRoyalTitleInCurrentFaction>
+              <seniorityRange>250~850</seniorityRange>
+              <!-- Knight to consul inclusive -->
+              <minTechLevel>Industrial</minTechLevel>
+              <hostileWeight>0.15</hostileWeight>
+            </li>
+          </nodes>
+        </li>
+
+        <!-- Calculate reward from colonistsToLendCount * lendForDays -->
+        <li Class="QuestNode_EvaluateSimpleCurve">
+          <value>$marketValue</value>
+          <storeAs>rewardValue</storeAs>
+          <curve>
+            <points>
+              <li>125, 250</li>
+              <li>750, 1500</li>
+              <li>2000, 4000</li>
+            </points>
+          </curve>
+        </li>
+        <!-- Shuttle -->
+        <li Class="QuestNode_ShuttleDelay">
+          <delayTicks>3500</delayTicks>
+          <lodgers>$adoptee</lodgers>
+            <node Class="QuestNode_Sequence">
+              <nodes>
+                <li Class="QuestNode_SubScript">
+                  <def>Util_TransportShip_Pickup</def>
+                  <parms>
+                    <leaveDelayTicks>45000</leaveDelayTicks>
+                    <requiredPawns>$adoptee</requiredPawns>
+                    <leaveImmediatelyWhenSatisfied>true</leaveImmediatelyWhenSatisfied>
+                  </parms>
+                </li>
+                <li Class="QuestNode_InspectString">
+                  <targets>$adoptee</targets>
+                  <inspectString TKey="InspectStringDepartShuttle">Should depart on shuttle</inspectString>
+                </li>
+                <li Class="QuestNode_Letter">
+                  <label TKey="LetterLabelShuttleArrived">Shuttle arrived</label>
+                  <text TKey="LetterTextShuttleArrived">The shuttle has arrived to collect [adoptee_nameFull].</text>
+                  <lookTargets>$pickupShipThing</lookTargets>
+                </li>
+            </nodes>
+          </node>
+        </li>
+
+        <!-- Shuttle destroyed -->
+        <li Class="QuestNode_Signal">
+          <inSignal>pickupShipThing.Destroyed</inSignal>
+          <node Class="QuestNode_Sequence">
+            <nodes>
+              <li Class="QuestNode_Letter">
+                <label TKey="LetterLabelShuttleDestroyed">Shuttle destroyed</label>
+                <text TKey="LetterTextShuttleDestroyed">The shuttle sent to collect [adoptee_nameFull] has been destroyed.</text>
+              </li>
+              <li Class="QuestNode_End">
+                <outcome>Fail</outcome>
+              </li>
+            </nodes>
+          </node>
+        </li>
+
+        <!-- Shuttle sent away -->
+        <li Class="QuestNode_Signal">
+          <inSignal>pickupShipThing.SentSatisfied</inSignal>
+          <node Class="QuestNode_Delay">
+            <delayTicks>$(randInt(300,600))</delayTicks>
+            <node Class="QuestNode_Sequence">
+              <nodes>
+                <li Class="QuestNode_GiveRewards">
+                  <parms>
+                    <allowGoodwill>true</allowGoodwill>
+                    <allowRoyalFavor>true</allowRoyalFavor>
+                  </parms>
+                </li>
+                <li Class="QuestNode_End">
+                  <outcome>Success</outcome>
+                  <sendStandardLetter>true</sendStandardLetter>
+
+                </li>
+              </nodes>
+            </node>
+          </node>
+        </li>
+        
+        <li Class="QuestNode_Signal">
+          <inSignal>pickupShipThing.SentUnsatisfied</inSignal>
+          <node Class="QuestNode_End">
+            <outcome>Fail</outcome>
+          </node>
+        </li>
+        
+      </nodes>
+    </root>
+  </QuestScriptDef>
+  
+</Defs>

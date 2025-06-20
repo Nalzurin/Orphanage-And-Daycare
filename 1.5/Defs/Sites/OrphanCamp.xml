@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <SitePartDef>
+    <defName>OrphanCamp</defName>
+    <label>Orphan camp</label>
+    <description>The location of the camp is here. The threat is unknown, but the children are willing to join your colony.</description>
+    <siteTexture>World/WorldObjects/Sites/GenericSite</siteTexture>
+    <expandingIconTexture>World/WorldObjects/Expanding/Sites/DistressCall</expandingIconTexture>
+    <approachOrderString>Approach {0}</approachOrderString>
+    <approachingReportString>Approach {0}</approachingReportString>
+    <requiresFaction>false</requiresFaction>
+    <ignoreIllegalLabelCharacterConfigError>true</ignoreIllegalLabelCharacterConfigError>
+    <showFactionInInspectString>false</showFactionInInspectString>
+    <applyFactionColorToSiteTexture>false</applyFactionColorToSiteTexture>
+    <arrivedLetterDef>NeutralEvent</arrivedLetterDef>
+    <wantsThreatPoints>true</wantsThreatPoints>
+    <disallowsAutomaticDetectionTimerStart>true</disallowsAutomaticDetectionTimerStart>
+    <considerEnteringAsAttack>false</considerEnteringAsAttack>
+    <workerClass>OrphanageAndDaycare.SitePartWorker_OrphanCamp</workerClass>
+    <selectionWeight>4</selectionWeight>
+    <tags>
+      <li>OrphanCamp</li>
+    </tags>
+  </SitePartDef>
+
+  <GenStepDef>
+    <defName>OrphanCamp_Outpost</defName>
+    <linkWithSite>OrphanCamp</linkWithSite>
+    <order>454</order>
+    <genStep Class="OrphanageAndDaycare.GenStep_OrphanCamp"/>
+  </GenStepDef>
+</Defs>

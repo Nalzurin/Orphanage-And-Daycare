@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<LanguageData>
+  <LetterLabelOrphanageChildRequest>Child care request</LetterLabelOrphanageChildRequest>
+  <LetterOrphanageChildRequest>{REQUESTER_labelShort} from {FACTION_name} contacted us and made a request:\n\n{REQUESTER_labelShort} cannot take care of their {AGE} named {CHILD_labelShort} and wants us to take the child in.</LetterOrphanageChildRequest>
+  <OrphanageCampLabel>Orphan camp</OrphanageCampLabel>
+  <OrphanageCampText>A passing traveler told you that a group of orphans have set up a camp nearby. They have nothing to defend themselves with. They seems to be willing to join anyone that can take care of them.</OrphanageCampText>
+</LanguageData>
