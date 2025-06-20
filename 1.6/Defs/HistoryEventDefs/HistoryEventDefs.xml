@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+  <HistoryEventDef>
+    <defName>CharityFulfilled_OrphanageCamp</defName>
+    <label>Children taken in</label>
+  </HistoryEventDef>
+  <HistoryEventDef>
+    <defName>CharityRefused_OrphanageCamp</defName>
+    <label>Children abandoned</label>
+  </HistoryEventDef>
+    <HistoryEventDef>
+    <defName>CharityFulfilled_OrphanageChildRequest</defName>
+    <label>Child taken in</label>
+  </HistoryEventDef>
+  <HistoryEventDef>
+    <defName>CharityRefused_OrphanageChildRequest</defName>
+    <label>Child refused</label>
+  </HistoryEventDef>
+  <HistoryEventDef>
+    <defName>RejectedChild</defName>
+    <label>Child refused</label>
+  </HistoryEventDef>
+  <HistoryEventDef>
+    <defName>AcceptedChild</defName>
+    <label>Child accepted</label>
+  </HistoryEventDef>
+
+
+
+</Defs>

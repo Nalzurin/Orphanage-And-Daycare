@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+  <QuestScriptDef>
+    <defName>OpportunitySite_OrphanCamp</defName>
+    <rootSelectionWeight>1</rootSelectionWeight>
+    <rootMinPoints>0</rootMinPoints>
+    <!--If you wish for it to appear more often remove this-->
+    <rootIncreasesPopulation>true</rootIncreasesPopulation>
+    <isRootSpecial>true</isRootSpecial>
+    <autoAccept>true</autoAccept>
+    <successHistoryEvent MayRequire="Ludeon.RimWorld.Ideology">CharityFulfilled_OrphanageCamp</successHistoryEvent>
+    <failedOrExpiredHistoryEvent MayRequire="Ludeon.RimWorld.Ideology">CharityRefused_OrphanageCamp</failedOrExpiredHistoryEvent>
+    <questNameRules>
+      <rulesStrings>
+        <li>questName->Orphan camp</li>
+      </rulesStrings>
+    </questNameRules>
+    <questDescriptionRules>
+      <rulesStrings>
+        <li>questDescription->A passing traveler told you that a group of orphans have set up a camp nearby. They have nothing to defend themselves with. They seems to be willing to join anyone that can take care of them.</li>
+      </rulesStrings>
+    </questDescriptionRules>
+    <root Class="OrphanageAndDaycare.QuestNode_Root_OrphanCamp" />
+  </QuestScriptDef>
+</Defs>
